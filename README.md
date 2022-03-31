@@ -22,7 +22,7 @@ Create parameter binder, setup ktor server and register handler in the routing f
 val binder = ParamBinder()
 embeddedServer(Netty, port = 8089) {
         routing {
-            registerHandler(handler, binder)
+            registerHandler(ApiHandler("test", HttpMethod.Post, ::handler), binder)
         }
         install(ContentNegotiation) {
             jackson()
@@ -31,7 +31,7 @@ embeddedServer(Netty, port = 8089) {
 ```
 Send request to a server to check result:
 ```bash
-$ curl -XPOST 'localhost:8089/one?param=99' -H "Content-Type: application/json" -d '{"message":"result"}' -H "Custom-Header: 3"
+$ curl -XPOST 'localhost:8089/test?param=99' -H "Content-Type: application/json" -d '{"message":"result"}' -H "Custom-Header: 3"
 result = 297.0
 ```
 
