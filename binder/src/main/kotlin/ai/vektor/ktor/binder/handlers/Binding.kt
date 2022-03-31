@@ -5,6 +5,7 @@ import ai.vektor.ktor.binder.converters.IntConverter
 import ai.vektor.ktor.binder.converters.LongConverter
 import ai.vektor.ktor.binder.converters.ParamConverter
 import ai.vektor.ktor.binder.converters.UUIDConverter
+import ai.vektor.ktor.binder.exceptions.ParamBindingException
 import ai.vektor.ktor.binder.processors.BodyProcessor
 import ai.vektor.ktor.binder.processors.HeaderParamProcessor
 import ai.vektor.ktor.binder.processors.ParamProcessor
@@ -34,7 +35,6 @@ class ParamBinder(
     private val processors: List<ParamProcessor> = defaultProcessors,
     private val converters: Map<KType, ParamConverter<*>> = defaultConverters
 ) {
-
     suspend fun bind(param: KParameter, call: ApplicationCall) =
         processors.firstOrNull { it.canProcess(param) }?.process(call, param)?.let {
             if (it.instanceOf(param.type.jvmErasure)) {
@@ -43,5 +43,10 @@ class ParamBinder(
                 is String -> converters[param.type]?.convert(it)
                 else -> null
             }
+        }.let {
+            if (it == null && !param.isOptional) {
+                throw ParamBindingException("Can't bind non-optional parameter")
+            }
+            it
         }
 }

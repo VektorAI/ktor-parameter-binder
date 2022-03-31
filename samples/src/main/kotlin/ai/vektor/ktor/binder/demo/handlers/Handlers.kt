@@ -47,10 +47,10 @@ suspend fun handlerFive(
     @HeaderParam("Custom-Header") b: String,
     @Body input: Input,
     @UserParam user: User
-): String {
+): User {
     log.info("$a $b $input $user")
     delay(1000)
-    return "OK"
+    return user
 }
 
 class Controller(private val factor: Int) {

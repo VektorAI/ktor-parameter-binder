@@ -22,11 +22,7 @@ fun Route.registerHandler(
     return route(apiHandler.path, apiHandler.method) {
         handle {
             val args = handler.parameters.map {
-                val value = binder.bind(it, this.call)
-                if (value == null && !it.isOptional) {
-                    throw IllegalStateException("Can't bind non-optional parameter ${it.name}")
-                }
-                value
+                binder.bind(it, this.call)
             }
 
             val response = if (handler.isSuspend) {
