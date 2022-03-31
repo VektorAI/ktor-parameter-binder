@@ -19,23 +19,24 @@ import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 
-val controller = Controller(3)
-
-val handlers = listOf(
-    ApiHandler("one", HttpMethod.Post, ::handlerOne),
-    ApiHandler("two", HttpMethod.Post, ::handlerTwo),
-    ApiHandler("three", HttpMethod.Put, ::handlerThree),
-    ApiHandler("four", HttpMethod.Patch, controller::handlerFour),
-    ApiHandler("five", HttpMethod.Patch, ::handlerFive)
-)
-
-val userProvider = UserProvider()
-
-val userParamProcessor = UserParamProcessor(userProvider)
-
-val binder = ParamBinder(processors = defaultProcessors + userParamProcessor)
-
 fun main() {
+
+    val controller = Controller(3)
+
+    val handlers = listOf(
+        ApiHandler("one", HttpMethod.Post, ::handlerOne),
+        ApiHandler("two", HttpMethod.Post, ::handlerTwo),
+        ApiHandler("three", HttpMethod.Put, ::handlerThree),
+        ApiHandler("four", HttpMethod.Patch, controller::handlerFour),
+        ApiHandler("five", HttpMethod.Patch, ::handlerFive)
+    )
+
+    val userProvider = UserProvider()
+
+    val userParamProcessor = UserParamProcessor(userProvider)
+
+    val binder = ParamBinder(processors = defaultProcessors + userParamProcessor)
+
     embeddedServer(Netty, port = 8089) {
         routing {
             handlers.forEach {
