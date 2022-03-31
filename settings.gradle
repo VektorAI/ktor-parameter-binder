@@ -1,2 +1,5 @@
 rootProject.name = 'ktor-binder'
 
+include ':binder', ':samples'
+
+project(':samples').projectDir = new File(rootDir, 'samples')
