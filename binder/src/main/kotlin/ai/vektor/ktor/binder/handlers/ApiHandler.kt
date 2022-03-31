@@ -1,21 +1,22 @@
 package ai.vektor.ktor.binder.handlers
 
-import io.ktor.application.*
-import io.ktor.http.*
-import io.ktor.response.*
-import io.ktor.routing.*
+import io.ktor.application.call
+import io.ktor.http.HttpMethod
+import io.ktor.response.respond
+import io.ktor.routing.route
+import io.ktor.routing.Route
 import kotlin.reflect.KCallable
 import kotlin.reflect.full.callSuspend
 
 data class ApiHandler(
-    val path: String,
-    val method: HttpMethod,
-    val handler: KCallable<Any>
+        val path: String,
+        val method: HttpMethod,
+        val handler: KCallable<Any>
 )
 
 fun Route.registerHandler(
-    apiHandler: ApiHandler,
-    binder: ParamBinder
+        apiHandler: ApiHandler,
+        binder: ParamBinder
 ): Route {
     val handler = apiHandler.handler
     return route(apiHandler.path, apiHandler.method) {
@@ -37,4 +38,3 @@ fun Route.registerHandler(
         }
     }
 }
-

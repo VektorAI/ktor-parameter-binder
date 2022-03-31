@@ -1,7 +1,7 @@
 package ai.vektor.ktor.binder.processors
 
 import ai.vektor.ktor.binder.annotations.HeaderParam
-import io.ktor.application.*
+import io.ktor.application.ApplicationCall
 import kotlin.reflect.KParameter
 import kotlin.reflect.full.findAnnotation
 

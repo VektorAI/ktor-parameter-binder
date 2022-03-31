@@ -1,21 +1,23 @@
 package ai.vektor.ktor.binder.demo
 
-import ai.vektor.ktor.binder.demo.handlers.*
+import ai.vektor.ktor.binder.demo.handlers.Controller
+import ai.vektor.ktor.binder.demo.handlers.handlerFive
+import ai.vektor.ktor.binder.demo.handlers.handlerOne
+import ai.vektor.ktor.binder.demo.handlers.handlerThree
+import ai.vektor.ktor.binder.demo.handlers.handlerTwo
 import ai.vektor.ktor.binder.demo.processors.UserParamProcessor
 import ai.vektor.ktor.binder.demo.provider.UserProvider
 import ai.vektor.ktor.binder.handlers.ApiHandler
 import ai.vektor.ktor.binder.handlers.ParamBinder
 import ai.vektor.ktor.binder.handlers.defaultProcessors
 import ai.vektor.ktor.binder.handlers.registerHandler
-import io.ktor.application.*
-import io.ktor.features.*
-import io.ktor.http.*
-import io.ktor.jackson.*
-import io.ktor.routing.*
-import io.ktor.server.engine.*
-import io.ktor.server.netty.*
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import io.ktor.application.install
+import io.ktor.features.ContentNegotiation
+import io.ktor.http.HttpMethod
+import io.ktor.jackson.jackson
+import io.ktor.routing.routing
+import io.ktor.server.engine.embeddedServer
+import io.ktor.server.netty.Netty
 
 val controller = Controller(3)
 

@@ -8,6 +8,7 @@ repositories {
 
 allprojects {
     apply plugin: "idea"
+    apply from: "$rootDir/ktlint.gradle"
 
     group 'ai.vektor.ktor.binder'
     version '0.1'

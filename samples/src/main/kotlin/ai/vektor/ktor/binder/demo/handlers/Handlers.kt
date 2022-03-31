@@ -9,7 +9,7 @@ import ai.vektor.ktor.binder.demo.model.User
 import kotlinx.coroutines.delay
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.util.*
+import java.util.UUID
 
 val log: Logger = LoggerFactory.getLogger("Handlers")
 

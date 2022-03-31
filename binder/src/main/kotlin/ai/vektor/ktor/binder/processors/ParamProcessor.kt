@@ -1,6 +1,6 @@
 package ai.vektor.ktor.binder.processors
 
-import io.ktor.application.*
+import io.ktor.application.ApplicationCall
 import kotlin.reflect.KParameter
 
 interface ParamProcessor {

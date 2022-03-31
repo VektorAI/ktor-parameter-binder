@@ -4,7 +4,7 @@ import ai.vektor.ktor.binder.demo.annotations.UserParam
 import ai.vektor.ktor.binder.demo.model.User
 import ai.vektor.ktor.binder.demo.provider.UserProvider
 import ai.vektor.ktor.binder.processors.ParamProcessor
-import io.ktor.application.*
+import io.ktor.application.ApplicationCall
 import kotlin.reflect.KParameter
 import kotlin.reflect.full.createType
 import kotlin.reflect.full.findAnnotation
