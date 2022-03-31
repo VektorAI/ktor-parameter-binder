@@ -1,7 +1,7 @@
 package ai.vektor.ktor.binder.demo
 
-import ai.vektor.ktor.binder.demo.handlers.Controller
-import ai.vektor.ktor.binder.demo.handlers.handlerFive
+import ai.vektor.ktor.binder.demo.handlers.ApiController
+import ai.vektor.ktor.binder.demo.handlers.handlerFour
 import ai.vektor.ktor.binder.demo.handlers.handlerOne
 import ai.vektor.ktor.binder.demo.handlers.handlerThree
 import ai.vektor.ktor.binder.demo.handlers.handlerTwo
@@ -27,14 +27,13 @@ import io.ktor.server.netty.Netty
 
 fun main() {
 
-    val controller = Controller(3)
+    val controller = ApiController(3)
 
     val handlers = listOf(
         ApiHandler("one", HttpMethod.Post, ::handlerOne),
         ApiHandler("two", HttpMethod.Post, ::handlerTwo),
         ApiHandler("three", HttpMethod.Put, ::handlerThree),
-        ApiHandler("four", HttpMethod.Patch, controller::handlerFour),
-        ApiHandler("five", HttpMethod.Patch, ::handlerFive)
+        ApiHandler("four", HttpMethod.Patch, ::handlerFour)
     )
 
     val userProvider = UserProvider()
@@ -48,6 +47,7 @@ fun main() {
             handlers.forEach {
                 registerHandler(it, binder)
             }
+            registerHandler(controller, binder)
         }
         install(ContentNegotiation) {
             jackson()

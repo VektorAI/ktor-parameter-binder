@@ -45,7 +45,7 @@ class ParamBinder(
             }
         }.let {
             if (it == null && !param.isOptional) {
-                throw ParamBindingException("Can't bind non-optional parameter")
+                throw ParamBindingException("Can't bind non-optional parameter ${param.name}")
             }
             it
         }

@@ -42,7 +42,7 @@ suspend fun handlerThree(
     return "OK"
 }
 
-suspend fun handlerFive(
+suspend fun handlerFour(
     @QueryParam("param") a: Int,
     @HeaderParam("Custom-Header") b: String,
     @Body input: Input,
@@ -51,16 +51,4 @@ suspend fun handlerFive(
     log.info("$a $b $input $user")
     delay(1000)
     return user
-}
-
-class Controller(private val factor: Int) {
-
-    fun handlerFour(
-        @QueryParam("param") a: Int,
-        @HeaderParam("Custom-Header") b: Double,
-        @Body input: Input
-    ): String {
-        log.info("param * $factor = ${a * factor}, $b $input")
-        return "OK"
-    }
 }
