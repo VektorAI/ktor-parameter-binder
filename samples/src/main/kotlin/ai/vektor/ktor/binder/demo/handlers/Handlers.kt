@@ -18,8 +18,8 @@ fun handlerOne(
     @HeaderParam("Custom-Header") b: Double,
     @Body input: Input
 ): String {
-    log.info("$a $b $input")
-    return "OK"
+    log.info("${input.message} = ${a * b}")
+    return "${input.message} = ${a * b}"
 }
 
 suspend fun handlerTwo(
