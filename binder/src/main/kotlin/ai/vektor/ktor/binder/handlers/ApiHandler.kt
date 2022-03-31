@@ -29,10 +29,8 @@ fun Route.registerHandler(
             }
 
             val response = if (handler.isSuspend) {
-                println("Suspend")
                 handler.callSuspend(*args.toTypedArray())
             } else {
-                println("Normal")
                 handler.call(*args.toTypedArray())
             }
             call.respond(response)

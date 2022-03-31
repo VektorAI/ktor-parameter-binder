@@ -1,5 +1,8 @@
-package ai.vektor.ktor.binder.demo
+package ai.vektor.ktor.binder.demo.processors
 
+import ai.vektor.ktor.binder.demo.annotations.UserParam
+import ai.vektor.ktor.binder.demo.model.User
+import ai.vektor.ktor.binder.demo.provider.UserProvider
 import ai.vektor.ktor.binder.processors.ParamProcessor
 import io.ktor.application.*
 import kotlin.reflect.KParameter

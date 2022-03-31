@@ -1,10 +1,17 @@
-package ai.vektor.ktor.binder.demo
+package ai.vektor.ktor.binder.demo.handlers
 
 import ai.vektor.ktor.binder.annotations.Body
 import ai.vektor.ktor.binder.annotations.HeaderParam
 import ai.vektor.ktor.binder.annotations.QueryParam
+import ai.vektor.ktor.binder.demo.annotations.UserParam
+import ai.vektor.ktor.binder.demo.model.Input
+import ai.vektor.ktor.binder.demo.model.User
 import kotlinx.coroutines.delay
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.util.*
+
+val log: Logger = LoggerFactory.getLogger("Handlers")
 
 fun handlerOne(
     @QueryParam("param") a: Int,

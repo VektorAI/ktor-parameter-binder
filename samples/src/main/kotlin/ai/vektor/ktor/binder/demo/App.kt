@@ -1,5 +1,8 @@
 package ai.vektor.ktor.binder.demo
 
+import ai.vektor.ktor.binder.demo.handlers.*
+import ai.vektor.ktor.binder.demo.processors.UserParamProcessor
+import ai.vektor.ktor.binder.demo.provider.UserProvider
 import ai.vektor.ktor.binder.handlers.ApiHandler
 import ai.vektor.ktor.binder.handlers.ParamBinder
 import ai.vektor.ktor.binder.handlers.defaultProcessors
@@ -13,8 +16,6 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-
-var log: Logger = LoggerFactory.getLogger("App")
 
 val controller = Controller(3)
 
