@@ -7,7 +7,7 @@ repositories {
 }
 
 group 'ai.vektor.ktor.binder'
-version '0.1'
+version '0.1-alpha1'
 
 
 dependencies {
