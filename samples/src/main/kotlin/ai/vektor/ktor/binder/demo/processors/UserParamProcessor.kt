@@ -18,5 +18,4 @@ class UserParamProcessor(private val userProvider: UserProvider) : ParamProcesso
         call.request.headers["Authorization"]?.toIntOrNull()?.let {
             userProvider.getUserById(it)
         }
-
 }
