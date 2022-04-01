@@ -11,5 +11,4 @@ class UserController {
     fun getUser(@QueryParam("id") id: Int): User {
         return User(id)
     }
-
 }
