@@ -3,6 +3,7 @@ package ai.vektor.ktor.binder.handlers
 import ai.vektor.ktor.binder.annotations.ApiMethod
 import ai.vektor.ktor.binder.annotations.ApiPath
 import ai.vektor.ktor.binder.annotations.Method
+import ai.vektor.ktor.binder.response.ResponseEntity
 import io.ktor.application.ApplicationCall
 import io.ktor.application.call
 import io.ktor.http.HttpMethod
@@ -66,6 +67,10 @@ private suspend fun callFunction(function: KFunction<*>, args: Map<KParameter, A
     }.let {
         when (it) {
             null, Unit -> call.respond(HttpStatusCode.NoContent)
+            is ResponseEntity -> when (it.value) {
+                null -> call.respond(it.status)
+                else -> call.respond(it.status, it.value)
+            }
             else -> call.respond(it)
         }
     }

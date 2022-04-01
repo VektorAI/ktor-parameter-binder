@@ -5,8 +5,12 @@ import ai.vektor.ktor.binder.annotations.ApiPath
 import ai.vektor.ktor.binder.annotations.Body
 import ai.vektor.ktor.binder.annotations.Method
 import ai.vektor.ktor.binder.annotations.QueryParam
+import ai.vektor.ktor.binder.integration.app.annotations.UserParam
 import ai.vektor.ktor.binder.integration.app.models.Book
 import ai.vektor.ktor.binder.integration.app.models.ISBN
+import ai.vektor.ktor.binder.integration.app.models.Purchase
+import ai.vektor.ktor.binder.integration.app.models.User
+import ai.vektor.ktor.binder.response.ResponseEntity
 
 @ApiPath("/api/books")
 class BookController {
@@ -41,5 +45,12 @@ class BookController {
     @ApiPath("/{id}")
     fun deleteBook(@QueryParam("id") id: ISBN) {
         books.removeIf { it.isbn == id }
+    }
+
+    @ApiMethod(Method.POST)
+    @ApiPath("/{id}/purchases")
+    fun buyBook(@QueryParam("id") id: ISBN, @UserParam user: User): ResponseEntity {
+        val book = books.firstOrNull { it.isbn == id } ?: return ResponseEntity.notFound()
+        return ResponseEntity.ok(Purchase(user, book))
     }
 }
