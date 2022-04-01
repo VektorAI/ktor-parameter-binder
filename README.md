@@ -1,4 +1,5 @@
 # Ktor Parameter Binder
+[![Build Status](https://github.com/VektorAI/ktor-parameter-binder/workflows/CI/badge.svg?branch=master)](https://github.com/VektorAI/ktor-parameter-binder/actions?query=workflow%3A%22CI%22+branch%3Amaster)
 [![Release](https://jitpack.io/v/VektorAI/ktor-parameter-binder.svg)](https://jitpack.io/#VektorAI/ktor-parameter-binder)
 
 An extension library that provides parameter binding ability to the ktor.ai micro framework
