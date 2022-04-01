@@ -44,7 +44,7 @@ class ParamBinder(
                 else -> null
             }
         }.let {
-            if (it == null && !param.isOptional) {
+            if (it == null && !param.isOptional && !param.type.isMarkedNullable) {
                 throw ParamBindingException("Can't bind non-optional parameter ${param.name}")
             }
             it
