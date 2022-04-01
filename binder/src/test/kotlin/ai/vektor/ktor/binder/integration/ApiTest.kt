@@ -5,6 +5,7 @@ import ai.vektor.ktor.binder.handlers.defaultConverters
 import ai.vektor.ktor.binder.handlers.defaultProcessors
 import ai.vektor.ktor.binder.handlers.registerHandler
 import ai.vektor.ktor.binder.integration.app.controllers.BookController
+import ai.vektor.ktor.binder.integration.app.controllers.UserController
 import ai.vektor.ktor.binder.integration.app.converters.ISBNConverter
 import ai.vektor.ktor.binder.integration.app.models.ISBN
 import ai.vektor.ktor.binder.integration.app.processors.UserParamProcessor
@@ -27,7 +28,8 @@ import kotlin.test.assertEquals
 class ApiTest {
 
     private val controllers = listOf(
-        BookController()
+        BookController(),
+        UserController()
     )
 
     private val converters = defaultConverters + mapOf(ISBN::class.createType() to ISBNConverter())
@@ -43,6 +45,17 @@ class ApiTest {
             install(ContentNegotiation) {
                 jackson()
             }
+        }
+    }
+
+    @Test
+    fun testUserGetApi() = withApplication(env) {
+        with(handleRequest(HttpMethod.Get, "/api/users/23")) {
+            assertEquals(
+                "{\"id\":23}",
+                response.content
+            )
+            assertEquals(HttpStatusCode.OK, response.status())
         }
     }
 
