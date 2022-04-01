@@ -233,9 +233,11 @@ class ApiTest {
 
     @Test
     fun testAuthorizedGetApi() = withApplication(env) {
-        with(handleRequest(HttpMethod.Get, "/api/auth/simple"){
-            addHeader("Authorization", "Basic YmFzaWM6YXV0aA==")
-        }) {
+        with(
+            handleRequest(HttpMethod.Get, "/api/auth/simple") {
+                addHeader("Authorization", "Basic YmFzaWM6YXV0aA==")
+            }
+        ) {
             assertEquals(
                 "OK",
                 response.content
@@ -246,9 +248,11 @@ class ApiTest {
 
     @Test
     fun testWrongCredentialsUnauthorizedAdminGetApi() = withApplication(env) {
-        with(handleRequest(HttpMethod.Get, "/api/auth/override"){
-            addHeader("Authorization", "Basic YmFzaWM6YXV0aA==")
-        }) {
+        with(
+            handleRequest(HttpMethod.Get, "/api/auth/override") {
+                addHeader("Authorization", "Basic YmFzaWM6YXV0aA==")
+            }
+        ) {
             assertEquals(
                 null,
                 response.content
@@ -259,9 +263,11 @@ class ApiTest {
 
     @Test
     fun testAuthorizedAdminGetApi() = withApplication(env) {
-        with(handleRequest(HttpMethod.Get, "/api/auth/override"){
-            addHeader("Authorization", "Basic YWRtaW46YXV0aA==")
-        }) {
+        with(
+            handleRequest(HttpMethod.Get, "/api/auth/override") {
+                addHeader("Authorization", "Basic YWRtaW46YXV0aA==")
+            }
+        ) {
             assertEquals(
                 "OK",
                 response.content

@@ -17,6 +17,4 @@ class AuthController {
     fun testOverride(): String {
         return "OK"
     }
-
-
 }
