@@ -4,12 +4,16 @@ import ai.vektor.ktor.binder.handlers.ParamBinder
 import ai.vektor.ktor.binder.handlers.defaultConverters
 import ai.vektor.ktor.binder.handlers.defaultProcessors
 import ai.vektor.ktor.binder.handlers.registerHandler
+import ai.vektor.ktor.binder.integration.app.controllers.AuthController
 import ai.vektor.ktor.binder.integration.app.controllers.BookController
 import ai.vektor.ktor.binder.integration.app.controllers.UserController
 import ai.vektor.ktor.binder.integration.app.converters.ISBNConverter
 import ai.vektor.ktor.binder.integration.app.models.ISBN
 import ai.vektor.ktor.binder.integration.app.processors.UserParamProcessor
 import io.ktor.application.install
+import io.ktor.auth.UserIdPrincipal
+import io.ktor.auth.authentication
+import io.ktor.auth.basic
 import io.ktor.features.ContentNegotiation
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
@@ -29,7 +33,8 @@ class ApiTest {
 
     private val controllers = listOf(
         BookController(),
-        UserController()
+        UserController(),
+        AuthController(),
     )
 
     private val converters = defaultConverters + mapOf(ISBN::class.createType() to ISBNConverter())
@@ -39,6 +44,26 @@ class ApiTest {
 
     private val env: ApplicationEngineEnvironment = applicationEngineEnvironment {
         module {
+            authentication {
+                basic {
+                    validate {
+                        if (it.name == "basic" && it.password == "auth") {
+                            UserIdPrincipal(it.name)
+                        } else {
+                            null
+                        }
+                    }
+                }
+                basic("admin") {
+                    validate {
+                        if (it.name == "admin" && it.password == "auth") {
+                            UserIdPrincipal(it.name)
+                        } else {
+                            null
+                        }
+                    }
+                }
+            }
             routing {
                 controllers.forEach { registerHandler(it, binder) }
             }
@@ -181,6 +206,67 @@ class ApiTest {
                 response.content
             )
             assertEquals(HttpStatusCode.NotFound, response.status())
+        }
+    }
+
+    @Test
+    fun testUnauthorizedGetApi() = withApplication(env) {
+        with(handleRequest(HttpMethod.Get, "/api/auth/simple")) {
+            assertEquals(
+                null,
+                response.content
+            )
+            assertEquals(HttpStatusCode.Unauthorized, response.status())
+        }
+    }
+
+    @Test
+    fun testUnauthorizedAdminGetApi() = withApplication(env) {
+        with(handleRequest(HttpMethod.Get, "/api/auth/override")) {
+            assertEquals(
+                null,
+                response.content
+            )
+            assertEquals(HttpStatusCode.Unauthorized, response.status())
+        }
+    }
+
+    @Test
+    fun testAuthorizedGetApi() = withApplication(env) {
+        with(handleRequest(HttpMethod.Get, "/api/auth/simple"){
+            addHeader("Authorization", "Basic YmFzaWM6YXV0aA==")
+        }) {
+            assertEquals(
+                "OK",
+                response.content
+            )
+            assertEquals(HttpStatusCode.OK, response.status())
+        }
+    }
+
+    @Test
+    fun testWrongCredentialsUnauthorizedAdminGetApi() = withApplication(env) {
+        with(handleRequest(HttpMethod.Get, "/api/auth/override"){
+            addHeader("Authorization", "Basic YmFzaWM6YXV0aA==")
+        }) {
+            assertEquals(
+                null,
+                response.content
+            )
+            assertEquals(HttpStatusCode.Unauthorized, response.status())
+        }
+    }
+
+    @Test
+    fun testAuthorizedAdminGetApi() = withApplication(env) {
+        with(handleRequest(HttpMethod.Get, "/api/auth/override"){
+            addHeader("Authorization", "Basic YWRtaW46YXV0aA==")
+        }) {
+            assertEquals(
+                "OK",
+                response.content
+            )
+            assertEquals(HttpStatusCode.OK, response.status())
         }
     }
 }

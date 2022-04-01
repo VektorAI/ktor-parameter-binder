@@ -2,10 +2,12 @@ package ai.vektor.ktor.binder.handlers
 
 import ai.vektor.ktor.binder.annotations.ApiMethod
 import ai.vektor.ktor.binder.annotations.ApiPath
+import ai.vektor.ktor.binder.annotations.Auth
 import ai.vektor.ktor.binder.annotations.Method
 import ai.vektor.ktor.binder.response.ResponseEntity
 import io.ktor.application.ApplicationCall
 import io.ktor.application.call
+import io.ktor.auth.authenticate
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.response.respond
@@ -43,6 +45,7 @@ fun Route.registerHandler(
     binder: ParamBinder
 ) {
     val prefix = controller::class.findAnnotation<ApiPath>()?.path ?: ""
+    val authController = controller::class.findAnnotation<Auth>()?.configurations
     controller::class.declaredMemberFunctions.filter {
         it.hasAnnotation<ApiPath>() || it.hasAnnotation<ApiMethod>()
     }.forEach { function ->
@@ -50,12 +53,30 @@ fun Route.registerHandler(
         val httpMethod = mapMethod(method)
         val suffix = function.findAnnotation<ApiPath>()?.path ?: ""
         val resultPath = mergePath(prefix, suffix)
+        val authOverride = function.findAnnotation<Auth>()?.configurations
+        val configurations = authOverride ?: authController
 
-        route(resultPath, httpMethod) {
-            handle {
-                val args = bindParams(binder, function, call, controller)
-                callFunction(function, args, call)
+        val build = { routing: Route ->
+            routing.route(resultPath, httpMethod) {
+                handle {
+                    val args = bindParams(binder, function, call, controller)
+                    callFunction(function, args, call)
+                }
             }
+        }
+
+        if (configurations != null) {
+            if (configurations.isEmpty()) {
+                authenticate {
+                    build(this)
+                }
+            } else {
+                authenticate(*configurations) {
+                    build(this)
+                }
+            }
+        } else {
+            build(this)
         }
     }
 }
