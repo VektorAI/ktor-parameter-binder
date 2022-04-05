@@ -11,7 +11,7 @@ allprojects {
     apply from: "$rootDir/ktlint.gradle"
 
     group 'ai.vektor.ktor.binder'
-    version '0.1-alpha1'
+    version '0.1-beta6'
 
     repositories {
         mavenCentral()
